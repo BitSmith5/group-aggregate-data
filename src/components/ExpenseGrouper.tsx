@@ -1,5 +1,6 @@
 import { useExpenseGrouper } from '../hooks/useExpenseGrouper';
 import type { Expense } from '../types/expense';
+import { useState } from 'react';
 import '../styles/ExpenseGrouper.css';
 
 interface ExpenseGrouperProps {
@@ -14,6 +15,8 @@ export function ExpenseGrouper({ expenses }: ExpenseGrouperProps) {
     getTotalAmount,
     getTopCategories
   } = useExpenseGrouper(expenses);
+
+  const [categoryFilter, setCategoryFilter] = useState<string>('');
 
   if(expenses.length === 0) {
     return (
@@ -59,6 +62,27 @@ export function ExpenseGrouper({ expenses }: ExpenseGrouperProps) {
             <h3>Totals</h3>
             <p className="category-item">Total Categories: {getCategoryCount()}</p>
             <p className="category-item">Total Amount: ${getTotalAmount().toFixed(2)}</p>
+          </div>
+
+          <div>
+            <h3>Category Totals</h3>
+            <select 
+              className="category-select"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              {Object.keys(groupedExpenses).map(category => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+            <div className="category-item">
+              <span className="category-name">Selected Category Total:</span>
+              <span className="category-amount">
+                ${getTotalByCategory(categoryFilter || 'Food').toFixed(2)}
+              </span>
+            </div>
           </div>
           
           <div>
