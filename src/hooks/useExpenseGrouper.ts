@@ -29,8 +29,8 @@ export const useExpenseGrouper = (expenses: Expense[]) => {
     return Object.values(groupedExpenses).reduce((total, amount) => total + amount, 0);
   }, [groupedExpenses]);
 
-  const getTopCategories = useCallback((limit: number): string[] => {
-    return Object.entries(groupedExpenses).sort(([, a], [, b]) => b - a).slice(0, limit).map(([category]) => category);
+  const getTopCategories = useCallback((limit: number) => {
+    return Object.entries(groupedExpenses).sort(([, a], [, b]) => b - a).slice(0, limit);
   }, [groupedExpenses]);
 
   return {
